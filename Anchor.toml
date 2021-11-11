@@ -1,12 +1,12 @@
 [programs.localnet]
-solana_twitter = "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"
+solana_twitter = "AyCdgphakGxHDBgqEPNw2wf7NjHhfVwfAjfpmu5vfc4Q"
 
 [registry]
 url = "https://anchor.projectserum.com"
 
 [provider]
 cluster = "localnet"
-wallet = "/Users/loris/.config/solana/id.json"
+wallet = "~/.config/solana/id.json"
 
 [scripts]
 test = "ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
