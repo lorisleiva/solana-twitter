@@ -8,9 +8,21 @@ describe('solana-twitter', () => {
 
     const program = anchor.workspace.SolanaTwitter as Program<SolanaTwitter>;
 
-    it('Is initialized!', async () => {
+    it('can send new tweets', async () => {
+        const tweetKeypair = anchor.web3.Keypair.generate();
+
         // Add your test here.
-        const tx = await program.rpc.initialize({});
+        const topic = 'veganism';
+        const content = 'Hummus, am I right?';
+        const tx = await program.rpc.sendTweet(topic, content, {
+            accounts: {
+                tweet: tweetKeypair.publicKey,
+                author: anchor.getProvider().wallet.publicKey,
+                systemProgram: anchor.web3.SystemProgram.programId,
+                rent: anchor.web3.SYSVAR_RENT_PUBKEY,
+            },
+            signers: [tweetKeypair],
+        });
         console.log("Your transaction signature", tx);
     });
 });

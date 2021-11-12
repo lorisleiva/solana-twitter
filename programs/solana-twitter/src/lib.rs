@@ -1,4 +1,5 @@
 use anchor_lang::prelude::*;
+use anchor_lang::solana_program::system_program;
 
 declare_id!("AyCdgphakGxHDBgqEPNw2wf7NjHhfVwfAjfpmu5vfc4Q");
 
@@ -17,8 +18,8 @@ pub mod solana_twitter {
 
 #[derive(Accounts)]
 pub struct SendTweet<'info> {
-    #[account(init, payer = author, space = Tweet.LEN)]
-    pub tweet: Account<'info, BaseAccount>,
+    #[account(init, payer = author, space = Tweet::LEN)]
+    pub tweet: Account<'info, Tweet>,
     #[account(mut)]
     pub author: Signer<'info>,
     #[account(address = system_program::ID)]
