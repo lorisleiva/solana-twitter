@@ -19,7 +19,6 @@ describe('solana-twitter', () => {
                 tweet: tweetKeypair.publicKey,
                 author: anchor.getProvider().wallet.publicKey,
                 systemProgram: anchor.web3.SystemProgram.programId,
-                rent: anchor.web3.SYSVAR_RENT_PUBKEY,
             },
             signers: [tweetKeypair],
         });

@@ -24,7 +24,6 @@ pub struct SendTweet<'info> {
     pub author: Signer<'info>,
     #[account(address = system_program::ID)]
     pub system_program: AccountInfo<'info>,
-    pub rent: Sysvar<'info, Rent>,
 }
 
 #[account]
