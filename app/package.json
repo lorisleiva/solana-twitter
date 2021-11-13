@@ -8,7 +8,16 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@project-serum/anchor": "^0.18.0",
+    "@solana/wallet-adapter-base": "^0.7.0",
+    "@solana/wallet-adapter-vue": "^0.3.1",
+    "@solana/wallet-adapter-vue-ui": "^0.1.1",
+    "@solana/wallet-adapter-wallets": "^0.11.3",
+    "@solana/web3.js": "^1.30.2",
+    "autoprefixer": "^10.4.0",
     "core-js": "^3.8.3",
+    "postcss": "^8.3.11",
+    "tailwindcss": "^2.2.19",
     "vue": "^3.2.13"
   },
   "devDependencies": {
