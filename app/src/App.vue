@@ -11,13 +11,25 @@ const wallets = [
 
 <template>
     <wallet-provider :wallets="wallets" auto-connect>
-        <div>
-            <div class="fixed top-0 right-0 p-8">
-                <wallet-modal-provider>
-                    <wallet-multi-button></wallet-multi-button>
-                </wallet-modal-provider>
-            </div>
-            <div>TODO</div>
+        <div class="w-full max-w-4xl mx-auto h-screen flex">
+
+            <!-- Sidebar. -->
+            <aside class="w-64">
+                Sidebar
+            </aside>
+
+            <!-- Main -->
+            <main class="flex-1 border-r border-l">
+                <div class="flex space-x-6 items-center justify-between p-8">
+                    <div>Home</div>
+                    <wallet-modal-provider>
+                        <wallet-multi-button></wallet-multi-button>
+                    </wallet-modal-provider>
+                </div>
+                <div>
+                    Content
+                </div>
+            </main>
         </div>
     </wallet-provider>
 </template>
