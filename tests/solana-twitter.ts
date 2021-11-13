@@ -28,9 +28,6 @@ describe('solana-twitter', () => {
         assert.equal(tweetAccount.author.toBase58(), program.provider.wallet.publicKey.toBase58());
         assert.equal(tweetAccount.topic, 'veganism');
         assert.equal(tweetAccount.content, 'Hummus, am I right?');
-
-        // const accountInfo = await program.provider.connection.getAccountInfo(tweet.publicKey);
-        // console.log(bs58.encode(accountInfo.data), bs58.encode(Buffer.from('veganism')))
     });
 
     it('can send a new tweet without a topic', async () => {
@@ -89,7 +86,9 @@ describe('solana-twitter', () => {
         const tweetAccounts = await program.account.tweet.all([
             {
                 memcmp: {
-                    offset: 8 + 32 + 4,
+                    offset: 8 + // Discriminator.
+                        32 + // Author public key.
+                        4, // Topic string length.
                     bytes: bs58.encode(Buffer.from('veganism')),
                 }
             }
@@ -102,7 +101,7 @@ describe('solana-twitter', () => {
         const tweetAccounts = await program.account.tweet.all([
             {
                 memcmp: {
-                    offset: 8,
+                    offset: 8, // Discriminator.
                     bytes: program.provider.wallet.publicKey.toBase58(),
                 }
             }
