@@ -8,10 +8,10 @@ describe('solana-twitter', () => {
     anchor.setProvider(anchor.Provider.env());
     const program = anchor.workspace.SolanaTwitter as Program<SolanaTwitter>;
 
-    // Send a tweet helper.
-    async function sendTweet(topic: string, content: string) {
+    it('can send a new tweet', async () => {
+        // Execute the "SendTweet" instruction.
         const tweet = anchor.web3.Keypair.generate();
-        const transaction = await program.rpc.sendTweet(topic, content, {
+        await program.rpc.sendTweet('veganism', 'Hummus, am I right?', {
             accounts: {
                 tweet: tweet.publicKey,
                 author: program.provider.wallet.publicKey,
@@ -19,13 +19,6 @@ describe('solana-twitter', () => {
             },
             signers: [tweet],
         });
-
-        return { tweet, transaction };
-    }
-
-    it('can send a new tweet', async () => {
-        // Execute the "SendTweet" instruction.
-        const { tweet } = await sendTweet('veganism', 'Hummus, am I right?');
 
         // Fetch the account details of the created tweet.
         const tweetAccount = await program.account.tweet.fetch(tweet.publicKey);
@@ -38,8 +31,15 @@ describe('solana-twitter', () => {
 
     it('can send a new tweet without a topic', async () => {
         // Execute the "SendTweet" instruction.
-        const { tweet } = await sendTweet('', 'gm');
-        anchor.setProvider(anchor.Provider.env());
+        const tweet = anchor.web3.Keypair.generate();
+        await program.rpc.sendTweet('', 'gm', {
+            accounts: {
+                tweet: tweet.publicKey,
+                author: program.provider.wallet.publicKey,
+                systemProgram: anchor.web3.SystemProgram.programId,
+            },
+            signers: [tweet],
+        });
 
         // Fetch the account details of the created tweet.
         const tweetAccount = await program.account.tweet.fetch(tweet.publicKey);
@@ -51,32 +51,29 @@ describe('solana-twitter', () => {
     });
 
     it('can send a new tweet from a different author', async () => {
-        // // Switch to the other user.
-        // // TODO
-        //
-        // // Execute the "SendTweet" instruction.
-        // const { tweet } = await sendTweet('veganism', 'Yay Tofu!');
-        //
-        // // Fetch the account details of the created tweet.
-        // const tweetAccount = await program.account.tweet.fetch(tweet.publicKey);
-        //
-        // // Ensure it has the right data.
-        // assert.equal(tweetAccount.author.toBase58(), program.provider.wallet.publicKey.toBase58());
-        // assert.equal(tweetAccount.topic, 'veganism');
-        // assert.equal(tweetAccount.content, 'Yay Tofu!');
-    });
+        // Generate another user and airdrop them some SOL.
+        const otherUser = anchor.web3.Keypair.generate();
+        const signature = await program.provider.connection.requestAirdrop(otherUser.publicKey, 1000000000);
+        await program.provider.connection.confirmTransaction(signature);
 
-    it('can send a new tweet again', async () => {
-        // Execute the "SendTweet" instruction.
-        const { tweet } = await sendTweet('veganism', 'Hummus, am I right?');
+        // Execute the "SendTweet" instruction on behalf of this other user.
+        const tweet = anchor.web3.Keypair.generate();
+        await program.rpc.sendTweet('veganism', 'Yay Tofu!', {
+            accounts: {
+                tweet: tweet.publicKey,
+                author: otherUser.publicKey,
+                systemProgram: anchor.web3.SystemProgram.programId,
+            },
+            signers: [otherUser, tweet],
+        });
 
         // Fetch the account details of the created tweet.
         const tweetAccount = await program.account.tweet.fetch(tweet.publicKey);
 
         // Ensure it has the right data.
-        assert.equal(tweetAccount.author.toBase58(), program.provider.wallet.publicKey.toBase58());
+        assert.equal(tweetAccount.author.toBase58(), otherUser.publicKey.toBase58());
         assert.equal(tweetAccount.topic, 'veganism');
-        assert.equal(tweetAccount.content, 'Hummus, am I right?');
+        assert.equal(tweetAccount.content, 'Yay Tofu!');
     });
 
     it('can fetch all tweets', async () => {
