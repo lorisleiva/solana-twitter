@@ -89,12 +89,25 @@ describe('solana-twitter', () => {
         const tweetAccounts = await program.account.tweet.all([
             {
                 memcmp: {
-                    offset: 8 + 32,
+                    offset: 8 + 32 + 4,
                     bytes: bs58.encode(Buffer.from('veganism')),
                 }
             }
         ]);
 
-        // assert.equal(tweetAccounts.length, 2);
+        assert.equal(tweetAccounts.length, 2);
+    });
+
+    it('can filter tweets by author', async () => {
+        const tweetAccounts = await program.account.tweet.all([
+            {
+                memcmp: {
+                    offset: 8,
+                    bytes: program.provider.wallet.publicKey.toBase58(),
+                }
+            }
+        ]);
+
+        assert.equal(tweetAccounts.length, 2);
     });
 });
