@@ -28,6 +28,9 @@ describe('solana-twitter', () => {
         assert.equal(tweetAccount.author.toBase58(), program.provider.wallet.publicKey.toBase58());
         assert.equal(tweetAccount.topic, 'veganism');
         assert.equal(tweetAccount.content, 'Hummus, am I right?');
+
+        // const accountInfo = await program.provider.connection.getAccountInfo(tweet.publicKey);
+        // console.log(bs58.encode(accountInfo.data), bs58.encode(Buffer.from('veganism')))
     });
 
     it('can send a new tweet without a topic', async () => {
