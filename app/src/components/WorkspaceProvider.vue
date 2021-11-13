@@ -1,6 +1,5 @@
 <script setup>
 import { initWorkspace } from '../useWorkspace'
-import { defineProps } from 'vue'
 
 const props = defineProps({
     network: {

@@ -11,7 +11,12 @@ module.exports = defineConfig({
         ],
         resolve: {
             fallback: {
-                crypto: false
+                crypto: false,
+                fs: false,
+                assert: false,
+                process: false,
+                util: false,
+                path: false,
             }
         }
     }
