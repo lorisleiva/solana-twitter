@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.wallet-adapter-dropdown {
+    @apply w-full;
+}
+
+.wallet-adapter-button {
+    @apply rounded-full w-full;
+}
+
+.wallet-adapter-button-trigger {
+    @apply bg-pink-500 justify-center !important;
+}
