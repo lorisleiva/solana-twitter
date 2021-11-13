@@ -82,6 +82,23 @@ describe('solana-twitter', () => {
         assert.equal(tweetAccounts.length, 3);
     });
 
+    it('can filter tweets by author', async () => {
+        const tweetAccounts = await program.account.tweet.all([
+            {
+                memcmp: {
+                    offset: 8, // Discriminator.
+                    bytes: program.provider.wallet.publicKey.toBase58(),
+                }
+            }
+        ]);
+
+        const expectedAuthor = program.provider.wallet.publicKey.toBase58();
+        assert.equal(tweetAccounts.length, 2);
+        assert.ok(tweetAccounts.every(tweetAccount => {
+            return tweetAccount.account.author.toBase58() === expectedAuthor
+        }))
+    });
+
     it('can filter tweets by topics', async () => {
         const tweetAccounts = await program.account.tweet.all([
             {
@@ -95,18 +112,8 @@ describe('solana-twitter', () => {
         ]);
 
         assert.equal(tweetAccounts.length, 2);
-    });
-
-    it('can filter tweets by author', async () => {
-        const tweetAccounts = await program.account.tweet.all([
-            {
-                memcmp: {
-                    offset: 8, // Discriminator.
-                    bytes: program.provider.wallet.publicKey.toBase58(),
-                }
-            }
-        ]);
-
-        assert.equal(tweetAccounts.length, 2);
+        assert.ok(tweetAccounts.every(tweetAccount => {
+            return tweetAccount.account.topic === 'veganism'
+        }))
     });
 });

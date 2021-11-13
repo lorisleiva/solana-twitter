@@ -33,9 +33,15 @@ pub struct Tweet {
     pub content: String,
 }
 
+const DISCRIMINATOR_LENGTH: usize = 8;
+const PUBLIC_KEY_LENGTH: usize = 32;
+const STRING_LENGTH_PREFIX: usize = 4; // Stores the size of the string.
+const MAX_TOPIC_LENGTH: usize = 50 * 4; // 50 chars max.
+const MAX_CONTENT_LENGTH: usize = 280 * 4; // 280 chars max.
+
 impl Tweet {
-    const LEN: usize = 8 // Discriminator.
-        + 32 // Author (Pubkey).
-        + 50 * 4 // Topic (String of 50 chars max).
-        + 280 * 4; // Content (Strong of 280 chars max).
+    const LEN: usize = DISCRIMINATOR_LENGTH
+        + PUBLIC_KEY_LENGTH // Author.
+        + STRING_LENGTH_PREFIX + MAX_TOPIC_LENGTH // Topic.
+        + STRING_LENGTH_PREFIX + MAX_CONTENT_LENGTH; // Content.
 }
