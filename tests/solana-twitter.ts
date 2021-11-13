@@ -2,6 +2,7 @@ import * as anchor from '@project-serum/anchor';
 import { Program } from '@project-serum/anchor';
 import { SolanaTwitter } from '../target/types/solana_twitter';
 import * as assert from "assert";
+import * as bs58 from "bs58";
 
 describe('solana-twitter', () => {
     // Configure the client to use the local cluster.
@@ -85,10 +86,12 @@ describe('solana-twitter', () => {
         const tweetAccounts = await program.account.tweet.all([
             {
                 memcmp: {
-                    offset: 1,
-                    bytes: 'Foo',
+                    offset: 8 + 32,
+                    bytes: bs58.encode(Buffer.from('veganism')),
                 }
             }
         ]);
+
+        // assert.equal(tweetAccounts.length, 2);
     });
 });
