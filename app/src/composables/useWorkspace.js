@@ -1,13 +1,13 @@
 import { Connection, PublicKey } from '@solana/web3.js'
 import { Program, Provider } from '@project-serum/anchor'
 import { useAnchorWallet } from '@solana/wallet-adapter-vue'
-import { computed, inject, provide } from 'vue'
+import { computed } from 'vue'
 import idl from '../../../target/idl/solana_twitter.json'
 
-const workspaceKey = Symbol();
 const programID = new PublicKey(idl.metadata.address)
+let workspaceState = {};
 
-export const useWorkspace = () => inject(workspaceKey)
+export const useWorkspace = () => workspaceState
 
 export const initWorkspace = (network = 'http://127.0.0.1:8899', preflightCommitment = 'processed') => {
     const wallet = useAnchorWallet()
@@ -15,10 +15,10 @@ export const initWorkspace = (network = 'http://127.0.0.1:8899', preflightCommit
     const provider = computed(() => new Provider(connection, wallet.value, { preflightCommitment }))
     const program = computed(() => new Program(idl, programID, provider.value))
 
-    provide(workspaceKey, {
+    workspaceState = {
         connection,
         provider,
         program,
         wallet,
-    })
+    }
 }
