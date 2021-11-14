@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { useAutoresizeTextarea, useCountCharacterLimit } from '@/composables'
 import { sendTweet } from '@/api'
+import { useWallet } from '@solana/wallet-adapter-vue'
 
 // Form data.
 const topic = ref('')
@@ -20,6 +21,7 @@ const characterLimitColour = computed(() => {
 })
 
 // Permissions.
+const { connected } = useWallet()
 const canTweet = computed(() => content.value && characterLimit.value > 0)
 
 // Actions.
@@ -34,7 +36,9 @@ const send = async () => {
 </script>
 
 <template>
-    <div class="px-8 py-4">
+    <div v-if="connected" class="px-8 py-4 border-b">
+
+        <!-- Content field. -->
         <textarea
             ref="textarea"
             rows="1"
@@ -42,7 +46,10 @@ const send = async () => {
             placeholder="What's happening?"
             v-model="content"
         ></textarea>
+
         <div class="flex items-center justify-between mt-4">
+
+            <!-- Topic field. -->
             <div class="relative">
                 <input
                     type="text"
@@ -57,9 +64,13 @@ const send = async () => {
                 </div>
             </div>
             <div class="flex items-center space-x-6">
+
+                <!-- Character limit. -->
                 <div :class="characterLimitColour">
                     {{ characterLimit }} left
                 </div>
+
+                <!-- Tweet button. -->
                 <button
                     class="text-white px-4 py-2 rounded-full font-semibold" :disabled="! canTweet"
                     :class="canTweet ? 'bg-pink-500' : 'bg-pink-300 cursor-not-allowed'"
@@ -69,5 +80,9 @@ const send = async () => {
                 </button>
             </div>
         </div>
+    </div>
+
+    <div v-else class="px-8 py-4 bg-gray-50 text-gray-500 text-center border-b">
+        Connect your wallet to start tweeting...
     </div>
 </template>

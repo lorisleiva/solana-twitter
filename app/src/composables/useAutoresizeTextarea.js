@@ -10,6 +10,6 @@ export const useAutoresizeTextarea = (element) => {
         if (! element.value) return
         resizeTextarea()
         element.value.addEventListener('input', resizeTextarea)
-        onInvalidate(() => element.value.removeEventListener('input', resizeTextarea))
+        onInvalidate(() => element.value?.removeEventListener('input', resizeTextarea))
     })
 }
