@@ -28,6 +28,8 @@ const send = async () => {
     if (! canTweet.value) return
     const tweet = await sendTweet(topic.value, content.value)
     emit('added', tweet)
+    topic.value = ''
+    content.value = ''
 }
 </script>
 
