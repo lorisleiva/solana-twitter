@@ -28,6 +28,7 @@ describe('solana-twitter', () => {
         assert.equal(tweetAccount.author.toBase58(), program.provider.wallet.publicKey.toBase58());
         assert.equal(tweetAccount.topic, 'veganism');
         assert.equal(tweetAccount.content, 'Hummus, am I right?');
+        assert.ok(tweetAccount.timestamp);
     });
 
     it('can send a new tweet without a topic', async () => {
@@ -49,6 +50,7 @@ describe('solana-twitter', () => {
         assert.equal(tweetAccount.author.toBase58(), program.provider.wallet.publicKey.toBase58());
         assert.equal(tweetAccount.topic, '');
         assert.equal(tweetAccount.content, 'gm');
+        assert.ok(tweetAccount.timestamp);
     });
 
     it('can send a new tweet from a different author', async () => {
@@ -75,6 +77,7 @@ describe('solana-twitter', () => {
         assert.equal(tweetAccount.author.toBase58(), otherUser.publicKey.toBase58());
         assert.equal(tweetAccount.topic, 'veganism');
         assert.equal(tweetAccount.content, 'Yay Tofu!');
+        assert.ok(tweetAccount.timestamp);
     });
 
     it('can fetch all tweets', async () => {
@@ -105,7 +108,8 @@ describe('solana-twitter', () => {
                 memcmp: {
                     offset: 8 + // Discriminator.
                         32 + // Author public key.
-                        4, // Topic string length.
+                        4 + // Topic string length.
+                        8, // Timestamp length.
                     bytes: bs58.encode(Buffer.from('veganism')),
                 }
             }
