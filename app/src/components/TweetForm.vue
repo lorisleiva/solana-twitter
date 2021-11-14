@@ -1,12 +1,13 @@
 <script setup>
 import { computed, ref } from 'vue'
-import { useAutoresizeTextarea, useCountCharacterLimit } from '@/composables'
+import { useAutoresizeTextarea, useCountCharacterLimit, useSlug } from '@/composables'
 import { sendTweet } from '@/api'
 import { useWallet } from '@solana/wallet-adapter-vue'
 
 // Form data.
-const topic = ref('')
 const content = ref('')
+const topic = ref('')
+const slugTopic = useSlug(topic)
 
 // Auto-resize the content's textarea.
 const textarea = ref()
@@ -28,7 +29,7 @@ const canTweet = computed(() => content.value && characterLimit.value > 0)
 const emit = defineEmits(['added'])
 const send = async () => {
     if (! canTweet.value) return
-    const tweet = await sendTweet(topic.value, content.value)
+    const tweet = await sendTweet(slugTopic.value, content.value)
     emit('added', tweet)
     topic.value = ''
     content.value = ''
@@ -55,7 +56,8 @@ const send = async () => {
                     type="text"
                     placeholder="topic"
                     class="text-pink-500 rounded-full pl-10 pr-4 py-2 bg-gray-100"
-                    v-model="topic"
+                    :value="slugTopic"
+                    @input="topic = $event.target.value"
                 >
                 <div class="absolute left-0 inset-y-0 flex pl-3 pr-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 m-auto" :class="topic ? 'text-pink-500' : 'text-gray-400'" viewBox="0 0 20 20" fill="currentColor">
