@@ -20,6 +20,7 @@ export const topicFilter = topic => ({
     memcmp: {
         offset: 8 + // Discriminator.
             32 + // Author public key.
+            8 + // Timestamp length.
             4, // Topic string length.
         bytes: bs58.encode(Buffer.from(topic)),
     }
