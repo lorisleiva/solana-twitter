@@ -9,12 +9,14 @@ const loading = ref(true)
 fetchTweets()
     .then(fetchedTweets => tweets.value = fetchedTweets)
     .finally(() => loading.value = false)
+
+const prependTweet = tweet => tweets.value.unshift(tweet)
 </script>
 
 <template>
     <div>
         <div class="border-b">
-            <tweet-form></tweet-form>
+            <tweet-form @added="prependTweet"></tweet-form>
         </div>
         <div v-if="loading" class="p-8 text-gray-500 text-center">
             Loading...
