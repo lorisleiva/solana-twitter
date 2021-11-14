@@ -1,7 +1,8 @@
 import { web3 } from '@project-serum/anchor'
-import { useWorkspace } from "../useWorkspace"
+import { Tweet } from '@/models'
+import { useWorkspace } from "@/useWorkspace"
 
-export default async (topic, content) => {
+export const sendTweet = async (topic, content) => {
     const { wallet, program } = useWorkspace()
     const tweet = web3.Keypair.generate()
 
@@ -13,4 +14,7 @@ export default async (topic, content) => {
         },
         signers: [tweet]
     })
+
+    const tweetAccount = await program.value.account.tweet.fetch(tweet.publicKey)
+    return new Tweet(tweet.publicKey, tweetAccount)
 }

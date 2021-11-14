@@ -1,10 +1,12 @@
 import bs58 from 'bs58'
-import { useWorkspace } from "../useWorkspace"
+import { Tweet } from '@/models';
+import { useWorkspace } from "@/useWorkspace"
 
-export default async (filters = []) => {
+export const fetchTweets = async (filters = []) => {
     const { program } = useWorkspace()
 
-    return await program.account.tweet.all(filters);
+    const tweets = await program.value.account.tweet.all(filters);
+    return tweets.map(tweet => new Tweet(tweet.publicKey, tweet.account))
 }
 
 export const authorFilter = author => ({
