@@ -1,10 +1,15 @@
 <script setup>
-    //
+import { ref } from 'vue'
+import { useAutoresizeTextarea } from '@/composables'
+
+const textarea = ref()
+useAutoresizeTextarea(textarea)
 </script>
 
 <template>
     <div class="px-8 py-4">
         <textarea
+            ref="textarea"
             rows="1"
             class="text-xl w-full focus:outline-none resize-none"
             placeholder="What's happening?"
