@@ -2,6 +2,8 @@
 import { ref } from 'vue'
 import { fetchTweets } from '@/api'
 import TweetCard from '@/components/TweetCard'
+import TweetForm from '@/components/TweetForm'
+
 const tweets = ref([])
 const loading = ref(true)
 fetchTweets()
@@ -11,8 +13,8 @@ fetchTweets()
 
 <template>
     <div>
-        <div class="p-8 border-b">
-            Tweet form here...
+        <div class="border-b">
+            <tweet-form></tweet-form>
         </div>
         <div v-if="loading" class="p-8 text-gray-500 text-center">
             Loading...

@@ -1,5 +1,5 @@
 <script setup>
-import { initWorkspace } from '@/useWorkspace'
+import { initWorkspace } from '@/composables'
 
 const props = defineProps({
     network: {

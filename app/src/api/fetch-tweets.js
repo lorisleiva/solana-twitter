@@ -1,6 +1,6 @@
 import bs58 from 'bs58'
 import { Tweet } from '@/models';
-import { useWorkspace } from "@/useWorkspace"
+import { useWorkspace } from "@/composables"
 
 export const fetchTweets = async (filters = []) => {
     const { program } = useWorkspace()
