@@ -13,13 +13,13 @@ const wallets = [
 <template>
     <wallet-provider :wallets="wallets" auto-connect>
         <workspace-provider>
-            <div class="w-full max-w-4xl mx-auto h-screen flex">
+            <div class="w-full max-w-4xl mx-auto">
 
                 <!-- Sidebar. -->
-                <the-sidebar class="w-64 py-8 pr-8"></the-sidebar>
+                <the-sidebar class="w-64 py-8 pr-8 fixed"></the-sidebar>
 
                 <!-- Main -->
-                <main class="flex-1 border-r border-l">
+                <main class="flex-1 border-r border-l ml-64 min-h-screen">
                     <header class="flex space-x-6 items-center justify-between px-8 py-4 border-b">
                         <div class="text-xl font-bold">Home</div>
                     </header>
