@@ -1,13 +1,20 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, toRefs } from 'vue'
 import { useAutoresizeTextarea, useCountCharacterLimit, useSlug } from '@/composables'
 import { sendTweet } from '@/api'
 import { useWallet } from '@solana/wallet-adapter-vue'
+
+// Props.
+const props = defineProps({
+    forcedTopic: String,
+})
+const { forcedTopic } = toRefs(props)
 
 // Form data.
 const content = ref('')
 const topic = ref('')
 const slugTopic = useSlug(topic)
+const effectiveTopic = computed(() => forcedTopic.value ?? slugTopic.value)
 
 // Auto-resize the content's textarea.
 const textarea = ref()
@@ -29,7 +36,7 @@ const canTweet = computed(() => content.value && characterLimit.value > 0)
 const emit = defineEmits(['added'])
 const send = async () => {
     if (! canTweet.value) return
-    const tweet = await sendTweet(slugTopic.value, content.value)
+    const tweet = await sendTweet(effectiveTopic.value, content.value)
     emit('added', tweet)
     topic.value = ''
     content.value = ''
@@ -56,11 +63,12 @@ const send = async () => {
                     type="text"
                     placeholder="topic"
                     class="text-pink-500 rounded-full pl-10 pr-4 py-2 bg-gray-100"
-                    :value="slugTopic"
+                    :value="effectiveTopic"
+                    :disabled="forcedTopic"
                     @input="topic = $event.target.value"
                 >
                 <div class="absolute left-0 inset-y-0 flex pl-3 pr-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 m-auto" :class="topic ? 'text-pink-500' : 'text-gray-400'" viewBox="0 0 20 20" fill="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 m-auto" :class="effectiveTopic ? 'text-pink-500' : 'text-gray-400'" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M9.243 3.03a1 1 0 01.727 1.213L9.53 6h2.94l.56-2.243a1 1 0 111.94.486L14.53 6H17a1 1 0 110 2h-2.97l-1 4H15a1 1 0 110 2h-2.47l-.56 2.242a1 1 0 11-1.94-.485L10.47 14H7.53l-.56 2.242a1 1 0 11-1.94-.485L5.47 14H3a1 1 0 110-2h2.97l1-4H5a1 1 0 110-2h2.47l.56-2.243a1 1 0 011.213-.727zM9.03 8l-1 4h2.938l1-4H9.031z" clip-rule="evenodd" />
                     </svg>
                 </div>
