@@ -4,6 +4,7 @@ import { fetchTweets, topicFilter } from '@/api'
 import { useSlug } from '@/composables'
 import TweetForm from '@/components/TweetForm'
 import TweetList from '@/components/TweetList'
+import TweetSearch from '@/components/TweetSearch'
 
 const tweets = ref([])
 const loading = ref(true)
@@ -27,31 +28,13 @@ const addTweet = tweet => tweets.value.push(tweet)
 </script>
 
 <template>
-    <div class="relative border-b">
-        <input
-            type="text"
-            placeholder="topic"
-            class="text-gray-700 w-full pl-16 pr-32 py-4 bg-gray-100"
-            :value="slugTopic"
-            @input="topic = $event.target.value"
-            @keydown.enter="fetchTopicTweets"
-        >
-        <div class="absolute left-0 inset-y-0 flex pl-8 pr-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 m-auto" :class="topic ? 'text-gray-700' : 'text-gray-400'" viewBox="0 0 20 20" fill="currentColor">
+    <tweet-search placeholder="topic" :modelValue="slugTopic" :disabled="! slugTopic" @update:modelValue="value => topic = value" @search="fetchTopicTweets">
+        <template #icon>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M9.243 3.03a1 1 0 01.727 1.213L9.53 6h2.94l.56-2.243a1 1 0 111.94.486L14.53 6H17a1 1 0 110 2h-2.97l-1 4H15a1 1 0 110 2h-2.47l-.56 2.242a1 1 0 11-1.94-.485L10.47 14H7.53l-.56 2.242a1 1 0 11-1.94-.485L5.47 14H3a1 1 0 110-2h2.97l1-4H5a1 1 0 110-2h2.47l.56-2.243a1 1 0 011.213-.727zM9.03 8l-1 4h2.938l1-4H9.031z" clip-rule="evenodd" />
-            </svg>
-        </div>
-        <div class="absolute right-0 inset-y-0 flex items-center pr-8">
-            <button
-                class="rounded-full px-4 py-1  font-semibold"
-                :class="slugTopic ? 'text-gray-700 bg-gray-300 hover:bg-gray-400' : 'text-gray-400 bg-gray-200 cursor-not-allowed'"
-                :disabled="! slugTopic"
-                @click="fetchTopicTweets"
-            >
-                Search
-            </button>
-        </div>
-    </div>
+            </svg>  
+        </template>
+    </tweet-search>
     <tweet-form v-if="viewedTopic" @added="addTweet" :forced-topic="viewedTopic"></tweet-form>
     <tweet-list v-if="viewedTopic" :tweets="tweets" :loading="loading"></tweet-list>
 </template>
