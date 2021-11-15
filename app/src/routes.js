@@ -5,12 +5,12 @@ export default [
         meta: { title: 'Home' },
     },
     {
-        path: '/topics',
+        path: '/topics/:topic?',
         component: require('@/components/PageTopics').default,
         meta: { title: 'Topics' },
     },
     {
-        path: '/users',
+        path: '/users/:author?',
         component: require('@/components/PageUsers').default,
         meta: { title: 'Users' },
     },
