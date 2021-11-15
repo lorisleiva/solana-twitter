@@ -1,8 +1,11 @@
 <script setup>
+import { useRoute } from 'vue-router'
 import { getPhantomWallet, getSolletWallet } from '@solana/wallet-adapter-wallets'
 import { WalletProvider } from '@solana/wallet-adapter-vue'
 import WorkspaceProvider from './components/WorkspaceProvider'
 import TheSidebar from './components/TheSidebar'
+
+const route = useRoute()
 
 const wallets = [
     getPhantomWallet(),
@@ -21,7 +24,7 @@ const wallets = [
                 <!-- Main -->
                 <main class="flex-1 border-r border-l ml-64 min-h-screen">
                     <header class="flex space-x-6 items-center justify-between px-8 py-4 border-b">
-                        <div class="text-xl font-bold">Home</div>
+                        <div class="text-xl font-bold" v-text="route.meta.title"></div>
                     </header>
                     <router-view></router-view>
                 </main>
