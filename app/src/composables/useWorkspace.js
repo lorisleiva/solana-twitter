@@ -2,16 +2,19 @@ import { Connection, PublicKey } from '@solana/web3.js'
 import { Program, Provider } from '@project-serum/anchor'
 import { useAnchorWallet } from '@solana/wallet-adapter-vue'
 import { computed } from 'vue'
-import idl from '../../../target/idl/solana_twitter.json'
 
+const cluster = process.env.VUE_APP_CLUSTER
+const clusterUrl = process.env.VUE_APP_CLUSTER_URL
+const preflightCommitment = 'processed'
+const idl = require(`@/idl/${cluster}.json`)
 const programID = new PublicKey(idl.metadata.address)
 let workspaceState = {};
 
 export const useWorkspace = () => workspaceState
 
-export const initWorkspace = (network = 'http://127.0.0.1:8899', preflightCommitment = 'processed') => {
+export const initWorkspace = () => {
     const wallet = useAnchorWallet()
-    const connection = new Connection(network, preflightCommitment)
+    const connection = new Connection(clusterUrl, preflightCommitment)
     const provider = computed(() => new Provider(connection, wallet.value, { preflightCommitment }))
     const program = computed(() => new Program(idl, programID, provider.value))
 

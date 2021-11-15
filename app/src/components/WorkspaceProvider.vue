@@ -1,6 +1,6 @@
 <script setup>
 import { initWorkspace } from '@/composables'
-initWorkspace(process.env.VUE_APP_CLUSTER, 'processed')
+initWorkspace()
 </script>
 
 <template>

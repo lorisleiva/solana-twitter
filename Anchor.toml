@@ -10,3 +10,6 @@ wallet = "~/.config/solana/id.json"
 
 [scripts]
 test = "npx ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+copy = "cp target/idl/solana_twitter.json app/src/idl/localnet.json"
+copy-devnet = "cp target/idl/solana_twitter.json app/src/idl/devnet.json"
+copy-mainnet = "cp target/idl/solana_twitter.json app/src/idl/mainnet.json"
