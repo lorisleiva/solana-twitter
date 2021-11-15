@@ -1,18 +1,27 @@
 <script setup>
-import { toRefs } from 'vue'
+import { computed, toRefs } from 'vue'
+import { useWorkspace } from '@/composables'
 
 const props = defineProps({
     tweet: Object,
 })
 
 const { tweet } = toRefs(props)
+const { wallet } = useWorkspace()
+const authorRoute = computed(() => {
+    if (wallet.value.publicKey.toBase58() === tweet.value.author.toBase58()) {
+        return { name: 'Profile' }
+    } else {
+        return { name: 'Users', params: { author: tweet.value.author.toBase58() } }
+    }
+})
 </script>
 
 <template>
     <div class="px-8 py-4">
         <div>
             <h3 class="inline font-semibold" :title="tweet.author">
-                <router-link :to="{ name: 'Users', params: { author: tweet.author.toBase58() } }" class="hover:underline">
+                <router-link :to="authorRoute" class="hover:underline">
                     {{ tweet.author_display }}
                 </router-link>
             </h3>
