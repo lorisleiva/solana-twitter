@@ -9,10 +9,10 @@ export const fetchTweets = async (filters = []) => {
     return tweets.map(tweet => new Tweet(tweet.publicKey, tweet.account))
 }
 
-export const authorFilter = author => ({
+export const authorFilter = authorBase58PublicKey => ({
     memcmp: {
         offset: 8, // Discriminator.
-        bytes: bs58.encode(Buffer.from(author)),
+        bytes: authorBase58PublicKey,
     }
 })
 
