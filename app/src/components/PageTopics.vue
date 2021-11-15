@@ -1,13 +1,14 @@
 <script setup>
 import { ref } from 'vue'
-import { useRouter, onBeforeRouteUpdate, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { fetchTweets, topicFilter } from '@/api'
-import { useSlug } from '@/composables'
+import { useSlug, useFromRoute } from '@/composables'
 import TweetForm from '@/components/TweetForm'
 import TweetList from '@/components/TweetList'
 import TweetSearch from '@/components/TweetSearch'
 
 // Data.
+const router = useRouter()
 const tweets = ref([])
 const loading = ref(true)
 const topic = ref('')
@@ -17,16 +18,6 @@ const viewedTopic = ref('')
 // Actions.
 const search = () => {
     router.push(`/topics/${slugTopic.value}`)
-}
-
-const fetchTopicTweetsFromRoute = (route) => {
-    topic.value = route.params.topic
-    if (topic.value) {
-        fetchTopicTweets()
-    } else {
-        tweets.value = []
-        viewedTopic.value = ''
-    }
 }
 
 const fetchTopicTweets = async () => {
@@ -44,12 +35,14 @@ const fetchTopicTweets = async () => {
 const addTweet = tweet => tweets.value.push(tweet)
 
 // Router hooks.
-const route = useRoute()
-const router = useRouter()
-fetchTopicTweetsFromRoute(route)
-onBeforeRouteUpdate((to, from, next) => {
-    fetchTopicTweetsFromRoute(to)
-    next()
+useFromRoute((route) => {
+    topic.value = route.params.topic
+    if (topic.value) {
+        fetchTopicTweets()
+    } else {
+        tweets.value = []
+        viewedTopic.value = ''
+    }
 })
 </script>
 
