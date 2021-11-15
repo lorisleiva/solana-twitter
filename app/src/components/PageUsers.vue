@@ -50,5 +50,10 @@ useFromRoute((route) => {
             </svg>
         </template>
     </tweet-search>
-    <tweet-list v-if="viewedAuthor" :tweets="tweets" :loading="loading"></tweet-list>
+    <div v-if="viewedAuthor">
+        <tweet-list :tweets="tweets" :loading="loading"></tweet-list>
+        <div v-if="tweets.length === 0" class="p-8 text-gray-500 text-center">
+            User not found...
+        </div>
+    </div>
 </template>
