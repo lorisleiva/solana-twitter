@@ -1,22 +1,22 @@
 export default [
     {
+        name: 'Home',
         path: '/',
         component: require('@/components/PageHome').default,
-        meta: { title: 'Home' },
     },
     {
+        name: 'Topics',
         path: '/topics/:topic?',
         component: require('@/components/PageTopics').default,
-        meta: { title: 'Topics' },
     },
     {
+        name: 'Users',
         path: '/users/:author?',
         component: require('@/components/PageUsers').default,
-        meta: { title: 'Users' },
     },
     {
+        name: 'Profile',
         path: '/profile',
         component: require('@/components/PageProfile').default,
-        meta: { title: 'Profile' },
     },
 ]
