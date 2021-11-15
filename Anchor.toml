@@ -1,11 +1,14 @@
 [programs.localnet]
 solana_twitter = "AyCdgphakGxHDBgqEPNw2wf7NjHhfVwfAjfpmu5vfc4Q"
 
+[programs.devnet]
+solana_twitter = "AyCdgphakGxHDBgqEPNw2wf7NjHhfVwfAjfpmu5vfc4Q"
+
 [registry]
 url = "https://anchor.projectserum.com"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
