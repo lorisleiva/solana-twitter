@@ -24,4 +24,9 @@ export default [
         path: '/tweet/:tweet',
         component: require('@/components/PageTweet').default,
     },
+    {
+        name: 'NotFound',
+        path: '/:pathMatch(.*)*',
+        component: require('@/components/PageNotFound').default,
+    },
 ]
