@@ -19,4 +19,9 @@ export default [
         path: '/profile',
         component: require('@/components/PageProfile').default,
     },
+    {
+        name: 'Tweet',
+        path: '/tweet/:tweet',
+        component: require('@/components/PageTweet').default,
+    },
 ]

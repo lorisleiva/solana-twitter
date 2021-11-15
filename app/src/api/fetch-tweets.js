@@ -4,7 +4,6 @@ import { useWorkspace } from "@/composables"
 
 export const fetchTweets = async (filters = []) => {
     const { program } = useWorkspace()
-
     const tweets = await program.value.account.tweet.all(filters);
     return tweets.map(tweet => new Tweet(tweet.publicKey, tweet.account))
 }
