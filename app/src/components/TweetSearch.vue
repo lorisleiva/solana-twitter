@@ -15,7 +15,7 @@ const { modelValue, placeholder, disabled } = toRefs(props)
     <div class="relative border-b">
         <input
             type="text"
-            class="text-gray-700 w-full pl-16 pr-32 py-4 bg-gray-100"
+            class="text-gray-700 w-full pl-16 pr-32 py-4 bg-gray-50"
             :placeholder="placeholder"
             :value="modelValue"
             @input="emit('update:modelValue', $event.target.value)"
@@ -27,7 +27,7 @@ const { modelValue, placeholder, disabled } = toRefs(props)
         <div class="absolute right-0 inset-y-0 flex items-center pr-8">
             <button
                 class="rounded-full px-4 py-1  font-semibold"
-                :class="! disabled ? 'text-gray-700 bg-gray-300 hover:bg-gray-400' : 'text-gray-400 bg-gray-200 cursor-not-allowed'"
+                :class="! disabled ? 'text-gray-700 bg-gray-300 hover:bg-gray-400 hover:text-white' : 'text-gray-400 bg-gray-200 cursor-not-allowed'"
                 :disabled="disabled"
                 @click="emit('search')"
             >
