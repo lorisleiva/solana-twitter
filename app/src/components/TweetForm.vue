@@ -50,15 +50,15 @@ const send = async () => {
         <textarea
             ref="textarea"
             rows="1"
-            class="text-xl w-full focus:outline-none resize-none"
+            class="text-xl w-full focus:outline-none resize-none mb-3"
             placeholder="What's happening?"
             v-model="content"
         ></textarea>
 
-        <div class="flex items-center justify-between mt-4">
+        <div class="flex flex-wrap items-center justify-between -m-2">
 
             <!-- Topic field. -->
-            <div class="relative">
+            <div class="relative m-2 mr-4">
                 <input
                     type="text"
                     placeholder="topic"
@@ -73,7 +73,7 @@ const send = async () => {
                     </svg>
                 </div>
             </div>
-            <div class="flex items-center space-x-6">
+            <div class="flex items-center space-x-6 m-2 ml-auto">
 
                 <!-- Character limit. -->
                 <div :class="characterLimitColour">

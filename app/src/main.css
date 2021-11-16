@@ -15,5 +15,9 @@
 }
 
 .wallet-adapter-dropdown-list {
-    @apply left-0 right-auto;
+    @apply top-auto bottom-full md:top-full md:bottom-auto md:left-0 md:right-auto;
+}
+
+.wallet-adapter-dropdown-list-active {
+    @apply transform -translate-y-3 md:translate-y-3
 }
