@@ -11,6 +11,14 @@ pub mod solana_twitter {
         let author: &Signer = &ctx.accounts.author;
         let clock: Clock = Clock::get().unwrap();
 
+        if topic.chars().count() > 50 {
+            return Err(ErrorCode::TopicTooLong.into())
+        }
+
+        if content.chars().count() > 280 {
+            return Err(ErrorCode::ContentTooLong.into())
+        }
+
         tweet.author = *author.key;
         tweet.timestamp = clock.unix_timestamp;
         tweet.topic = topic;
@@ -51,4 +59,12 @@ impl Tweet {
         + TIMESTAMP_LENGTH // Timestamp.
         + STRING_LENGTH_PREFIX + MAX_TOPIC_LENGTH // Topic.
         + STRING_LENGTH_PREFIX + MAX_CONTENT_LENGTH; // Content.
+}
+
+#[error]
+pub enum ErrorCode {
+    #[msg("The provided topic should be 50 characters long maximum.")]
+    TopicTooLong,
+    #[msg("The provided content should be 280 characters long maximum.")]
+    ContentTooLong,
 }
