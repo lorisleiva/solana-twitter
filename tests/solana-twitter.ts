@@ -118,4 +118,9 @@ describe('solana-twitter', () => {
 
         assert.fail('The instruction should have failed with a 281-character content.');
     });
+
+    it('can fetch all tweets', async () => {
+        const tweetAccounts = await program.account.tweet.all();
+        assert.equal(tweetAccounts.length, 3);
+    });
 });
