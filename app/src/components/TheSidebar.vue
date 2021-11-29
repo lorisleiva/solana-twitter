@@ -1,4 +1,5 @@
 <script setup>
+import { WalletMultiButton } from 'solana-wallets-vue'
 </script>
 
 <template>
@@ -50,10 +51,7 @@
             </router-link>
         </div>
         <div class="fixed bottom-8 right-8 md:static w-48 md:w-full">
-            <!-- TODO: Connect wallet -->
-            <div class="bg-pink-500 text-center w-full text-white rounded-full px-4 py-2">
-                Select a wallet
-            </div>
+            <wallet-multi-button></wallet-multi-button>
         </div>
     </aside>
 </template>
