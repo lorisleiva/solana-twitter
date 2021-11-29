@@ -9,10 +9,12 @@
   },
   "dependencies": {
     "@project-serum/anchor": "^0.18.2",
+    "@solana/wallet-adapter-wallets": "^0.15.4",
     "@solana/web3.js": "^1.31.0",
     "autoprefixer": "^10.4.0",
     "core-js": "^3.8.3",
     "postcss": "^8.4.1",
+    "solana-wallets-vue": "^0.3.1",
     "tailwindcss": "^2.2.19",
     "vue": "^3.2.13",
     "vue-router": "^4.0.12"
