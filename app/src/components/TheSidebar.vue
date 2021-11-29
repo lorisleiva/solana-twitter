@@ -1,4 +1,5 @@
 <script setup>
+import { WalletMultiButton, WalletModalProvider } from '@solana/wallet-adapter-vue-ui'
 </script>
 
 <template>
@@ -50,10 +51,9 @@
             </router-link>
         </div>
         <div class="fixed bottom-8 right-8 md:static w-48 md:w-full">
-            <!-- TODO: Connect wallet -->
-            <div class="bg-pink-500 text-center w-full text-white rounded-full px-4 py-2">
-                Select a wallet
-            </div>
+            <wallet-modal-provider>
+                <wallet-multi-button></wallet-multi-button>
+            </wallet-modal-provider>
         </div>
     </aside>
 </template>
