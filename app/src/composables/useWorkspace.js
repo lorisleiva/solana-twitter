@@ -1,7 +1,7 @@
-import { Connection, PublicKey } from '@solana/web3.js'
-import { Program, Provider } from '@project-serum/anchor'
+import { inject, provide, computed } from 'vue'
 import { useAnchorWallet } from '@solana/wallet-adapter-vue'
-import { computed, inject, provide } from 'vue'
+import { Connection, PublicKey } from '@solana/web3.js'
+import { Provider, Program } from '@project-serum/anchor'
 import idl from '../../../target/idl/solana_twitter.json'
 
 const programID = new PublicKey(idl.metadata.address)
@@ -16,9 +16,9 @@ export const initWorkspace = () => {
     const program = computed(() => new Program(idl, programID, provider.value))
 
     provide(workspaceSymbol, {
+        wallet,
         connection,
         provider,
         program,
-        wallet,
     })
 }
