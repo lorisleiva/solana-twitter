@@ -19,5 +19,5 @@
 }
 
 .wallet-adapter-dropdown-list-active {
-    @apply transform -translate-y-3 md:translate-y-3
+    @apply transform -translate-y-3 md:translate-y-3;
 }
