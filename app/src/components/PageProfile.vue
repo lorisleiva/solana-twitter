@@ -1,16 +1,18 @@
 <script setup>
 import { ref, watchEffect } from 'vue'
-import { fetchTweets } from '@/api'
+import { fetchTweets, authorFilter } from '@/api'
 import TweetForm from '@/components/TweetForm'
 import TweetList from '@/components/TweetList'
 import { useWorkspace } from '@/composables'
 
 const tweets = ref([])
 const loading = ref(true)
-const { wallet } = useWorkspace()
+const workspace = useWorkspace()
+const { wallet } = workspace
 
 watchEffect(() => {
-    fetchTweets()
+    if (! wallet.value) return
+    fetchTweets(workspace, [authorFilter(wallet.value.publicKey.toBase58())])
         .then(fetchedTweets => tweets.value = fetchedTweets)
         .finally(() => loading.value = false)
 })
