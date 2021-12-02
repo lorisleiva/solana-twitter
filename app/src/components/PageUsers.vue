@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { fetchTweets } from '@/api'
+import { fetchTweets, authorFilter } from '@/api'
 import { useFromRoute } from '@/composables'
 import TweetList from '@/components/TweetList'
 import TweetSearch from '@/components/TweetSearch'
@@ -22,7 +22,7 @@ const fetchAuthorTweets = async () => {
     if (author.value === viewedAuthor.value) return
     try {
         loading.value = true
-        const fetchedTweets = await fetchTweets()
+        const fetchedTweets = await fetchTweets([authorFilter(author.value)])
         tweets.value = fetchedTweets
         viewedAuthor.value = author.value
     } finally {
