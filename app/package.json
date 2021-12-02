@@ -13,6 +13,7 @@
     "@solana/web3.js": "^1.31.0",
     "autoprefixer": "^10.4.0",
     "core-js": "^3.8.3",
+    "dayjs": "^1.10.7",
     "postcss": "^8.4.1",
     "solana-wallets-vue": "^0.3.1",
     "tailwindcss": "^2.2.19",
