@@ -13,7 +13,7 @@ describe('solana-twitter', () => {
         await program.rpc.sendTweet(topic, content, {
             accounts: {
                 tweet: tweet.publicKey,
-                author: author,
+                author,
                 systemProgram: anchor.web3.SystemProgram.programId,
             },
             signers: [tweet],
@@ -188,7 +188,7 @@ describe('solana-twitter', () => {
         await program.rpc.updateTweet('solana', 'gm everyone!', {
             accounts: {
                 tweet: tweet.publicKey,
-                author: program.provider.wallet.publicKey,
+                author,
             },
         });
 
