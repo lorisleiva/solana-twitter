@@ -8,6 +8,19 @@ describe('solana-twitter', () => {
     // Configure the client to use the local cluster.
     anchor.setProvider(anchor.Provider.env());
     const program = anchor.workspace.SolanaTwitter as Program<SolanaTwitter>;
+    const sendTweet = async (author, topic, content) => {
+        const tweet = anchor.web3.Keypair.generate();
+        await program.rpc.sendTweet(topic, content, {
+            accounts: {
+                tweet: tweet.publicKey,
+                author: author,
+                systemProgram: anchor.web3.SystemProgram.programId,
+            },
+            signers: [tweet],
+        });
+
+        return tweet
+    }
 
     it('can send a new tweet', async () => {
         // Call the "SendTweet" instruction.
@@ -159,5 +172,51 @@ describe('solana-twitter', () => {
         assert.ok(tweetAccounts.every(tweetAccount => {
             return tweetAccount.account.topic === 'veganism'
         }))
+    });
+
+    it('can update a tweet', async () => {
+        // Send a tweet and fetch its account.
+        const author = program.provider.wallet.publicKey;
+        const tweet = await sendTweet(author, 'web2', 'Hello World!');
+        const tweetAccount = await program.account.tweet.fetch(tweet.publicKey);
+
+        // Ensure it has the right data.
+        assert.equal(tweetAccount.topic, 'web2');
+        assert.equal(tweetAccount.content, 'Hello World!');
+
+        // Update the Tweet.
+        await program.rpc.updateTweet('solana', 'gm everyone!', {
+            accounts: {
+                tweet: tweet.publicKey,
+                author: program.provider.wallet.publicKey,
+            },
+        });
+
+        // Ensure the updated tweet has the updated data.
+        const updatedTweetAccount = await program.account.tweet.fetch(tweet.publicKey);
+        assert.equal(updatedTweetAccount.topic, 'solana');
+        assert.equal(updatedTweetAccount.content, 'gm everyone!');
+    });
+
+    it('cannot update someone else\'s tweet', async () => {
+        // Send a tweet.
+        const author = program.provider.wallet.publicKey;
+        const tweet = await sendTweet(author, 'solana', 'Solana is awesome!');
+
+        // Update the Tweet.
+        try {
+            await program.rpc.updateTweet('eth', 'Ethereum is awesome!', {
+                accounts: {
+                    tweet: tweet.publicKey,
+                    author: anchor.web3.Keypair.generate().publicKey,
+                },
+            });
+            assert.fail('We were able to update someone else\'s tweet.');
+        } catch (error) {
+            // Ensure the tweet account kept the initial data.
+            const tweetAccount = await program.account.tweet.fetch(tweet.publicKey);
+            assert.equal(tweetAccount.topic, 'solana');
+            assert.equal(tweetAccount.content, 'Solana is awesome!');
+        }
     });
 });
