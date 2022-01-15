@@ -11,7 +11,7 @@ solana_twitter = "BNDCEb5uXCuWDxJW9BGmbfvR1JBMAKckfhYrEKW2Bv1W"
 url = "https://anchor.projectserum.com"
 
 [provider]
-cluster = "devnet"
+cluster = "localnet"
 wallet = "/Users/loris/.config/solana/id.json"
 
 [scripts]
