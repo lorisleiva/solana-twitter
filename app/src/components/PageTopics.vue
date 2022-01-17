@@ -56,7 +56,7 @@ useFromRoute((route) => {
     </tweet-search>
     <div v-if="viewedTopic">
         <tweet-form @added="addTweet" :forced-topic="viewedTopic"></tweet-form>
-        <tweet-list :tweets="tweets" :loading="loading"></tweet-list>
+        <tweet-list v-model:tweets="tweets" :loading="loading"></tweet-list>
         <div v-if="tweets.length === 0" class="p-8 text-gray-500 text-center">
             No tweets were found in this topic...
         </div>

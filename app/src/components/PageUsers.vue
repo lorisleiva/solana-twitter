@@ -51,7 +51,7 @@ useFromRoute((route) => {
         </template>
     </tweet-search>
     <div v-if="viewedAuthor">
-        <tweet-list :tweets="tweets" :loading="loading"></tweet-list>
+        <tweet-list v-model:tweets="tweets" :loading="loading"></tweet-list>
         <div v-if="tweets.length === 0" class="p-8 text-gray-500 text-center">
             User not found...
         </div>
