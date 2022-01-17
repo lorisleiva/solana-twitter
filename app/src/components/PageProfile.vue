@@ -25,5 +25,5 @@ const addTweet = tweet => tweets.value.push(tweet)
         {{ wallet.publicKey.toBase58() }}
     </div>
     <tweet-form @added="addTweet"></tweet-form>
-    <tweet-list :tweets="tweets" :loading="loading"></tweet-list>
+    <tweet-list v-model:tweets="tweets" :loading="loading"></tweet-list>
 </template>
