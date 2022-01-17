@@ -30,5 +30,5 @@ watchEffect(async () => {
     <div v-else-if="! tweet" class="p-8 text-gray-500 text-center">
         Tweet not found
     </div>
-    <tweet-card v-else :tweet="tweet"></tweet-card>
+    <tweet-card v-else :tweet="tweet" @delete="$router.push({ name: 'Home' })"></tweet-card>
 </template>
