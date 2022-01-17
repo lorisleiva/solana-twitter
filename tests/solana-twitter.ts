@@ -219,4 +219,44 @@ describe('solana-twitter', () => {
             assert.equal(tweetAccount.content, 'Solana is awesome!');
         }
     });
+
+    it('can delete a tweet', async () => {
+        // Create a new tweet.
+        const author = program.provider.wallet.publicKey;
+        const tweet = await sendTweet(author, 'solana', 'gm');
+
+        // Delete the Tweet.
+        await program.rpc.deleteTweet({
+            accounts: {
+                tweet: tweet.publicKey,
+                author,
+            },
+        });
+
+        // Ensure fetching the tweet account returns null.
+        const tweetAccount = await program.account.tweet.fetchNullable(tweet.publicKey);
+        assert.ok(tweetAccount === null);
+    });
+
+    it('cannot delete someone else\'s tweet', async () => {
+        // Create a new tweet.
+        const author = program.provider.wallet.publicKey;
+        const tweet = await sendTweet(author, 'solana', 'gm');
+
+        // Try to delete the Tweet from a different author.
+        try {
+            await program.rpc.deleteTweet({
+                accounts: {
+                    tweet: tweet.publicKey,
+                    author: anchor.web3.Keypair.generate().publicKey,
+                },
+            });
+            assert.fail('We were able to delete someone else\'s tweet.');
+        } catch (error) {
+            // Ensure the tweet account still exists with the right data.
+            const tweetAccount = await program.account.tweet.fetch(tweet.publicKey);
+            assert.equal(tweetAccount.topic, 'solana');
+            assert.equal(tweetAccount.content, 'gm');
+        }
+    });
 });
