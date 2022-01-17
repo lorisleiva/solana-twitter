@@ -43,6 +43,10 @@ pub mod solana_twitter {
 
         Ok(())
     }
+
+    pub fn delete_tweet(_ctx: Context<DeleteTweet>) -> ProgramResult {
+        Ok(())
+    }
 }
 
 #[derive(Accounts)]
@@ -58,6 +62,13 @@ pub struct SendTweet<'info> {
 #[derive(Accounts)]
 pub struct UpdateTweet<'info> {
     #[account(mut, has_one = author)]
+    pub tweet: Account<'info, Tweet>,
+    pub author: Signer<'info>,
+}
+
+#[derive(Accounts)]
+pub struct DeleteTweet<'info> {
+    #[account(mut, has_one = author, close = author)]
     pub tweet: Account<'info, Tweet>,
     pub author: Signer<'info>,
 }
