@@ -3,11 +3,10 @@ import { ref } from 'vue'
 import { fetchTweets } from '@/api'
 import TweetForm from '@/components/TweetForm'
 import TweetList from '@/components/TweetList'
-import { useWorkspace } from '@/composables'
 
 const tweets = ref([])
 const loading = ref(true)
-fetchTweets(useWorkspace())
+fetchTweets()
     .then(fetchedTweets => tweets.value = fetchedTweets)
     .finally(() => loading.value = false)
 

@@ -1,5 +1,5 @@
 // CSS.
-import '@solana/wallet-adapter-vue-ui/styles.css'
+import 'solana-wallets-vue/styles.css'
 import './main.css'
 
 // Day.js

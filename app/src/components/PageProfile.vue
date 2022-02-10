@@ -7,12 +7,11 @@ import { useWorkspace } from '@/composables'
 
 const tweets = ref([])
 const loading = ref(true)
-const workspace = useWorkspace()
-const { wallet } = workspace
+const { wallet } = useWorkspace()
 
 watchEffect(() => {
     if (! wallet.value) return
-    fetchTweets(workspace, [authorFilter(wallet.value.publicKey.toBase58())])
+    fetchTweets([authorFilter(wallet.value.publicKey.toBase58())])
         .then(fetchedTweets => tweets.value = fetchedTweets)
         .finally(() => loading.value = false)
 })

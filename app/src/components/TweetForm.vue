@@ -1,8 +1,8 @@
 <script setup>
 import { computed, ref, toRefs } from 'vue'
-import { useAutoresizeTextarea, useCountCharacterLimit, useSlug, useWorkspace } from '@/composables'
+import { useWallet } from 'solana-wallets-vue'
+import { useAutoresizeTextarea, useCountCharacterLimit, useSlug } from '@/composables'
 import { sendTweet } from '@/api'
-import { useWallet } from '@solana/wallet-adapter-vue'
 
 // Props.
 const props = defineProps({
@@ -34,10 +34,9 @@ const canTweet = computed(() => content.value && characterLimit.value > 0)
 
 // Actions.
 const emit = defineEmits(['added'])
-const workspace = useWorkspace()
 const send = async () => {
     if (! canTweet.value) return
-    const tweet = await sendTweet(workspace, effectiveTopic.value, content.value)
+    const tweet = await sendTweet(effectiveTopic.value, content.value)
     emit('added', tweet)
     topic.value = ''
     content.value = ''

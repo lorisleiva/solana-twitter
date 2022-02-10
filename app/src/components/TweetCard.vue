@@ -10,8 +10,7 @@ const props = defineProps({
 })
 
 const { tweet } = toRefs(props)
-const workspace = useWorkspace()
-const { wallet } = workspace
+const { wallet } = useWorkspace()
 const isMyTweet = computed(() => wallet.value && wallet.value.publicKey.toBase58() === tweet.value.author.toBase58())
 const authorRoute = computed(() => {
     if (isMyTweet.value) {
@@ -24,7 +23,7 @@ const authorRoute = computed(() => {
 const isEditing = ref(false)
 
 const onDelete = async () => {
-    await deleteTweet(workspace, tweet.value);
+    await deleteTweet(tweet.value);
     emit('delete', tweet.value)
 }
 </script>

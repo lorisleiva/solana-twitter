@@ -1,6 +1,5 @@
 <script setup>
-import { WalletMultiButton, WalletModalProvider } from '@solana/wallet-adapter-vue-ui'
-import { useWallet } from '@solana/wallet-adapter-vue'
+import { useWallet, WalletMultiButton } from 'solana-wallets-vue'
 const { connected } = useWallet()
 </script>
 
@@ -52,9 +51,7 @@ const { connected } = useWallet()
             </router-link>
         </div>
         <div class="fixed bottom-8 right-8 md:static w-48 md:w-full">
-            <wallet-modal-provider>
-                <wallet-multi-button></wallet-multi-button>
-            </wallet-modal-provider>
+            <wallet-multi-button></wallet-multi-button>
         </div>
     </aside>
 </template>
