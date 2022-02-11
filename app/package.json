@@ -12,7 +12,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@project-serum/anchor": "^0.18.2",
+    "@project-serum/anchor": "^0.21.0",
     "@solana/wallet-adapter-wallets": "^0.15.4",
     "@solana/web3.js": "^1.31.0",
     "autoprefixer": "^10.4.0",
