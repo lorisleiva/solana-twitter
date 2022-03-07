@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { fetchTweets, topicFilter } from '@/api'
+import { paginateTweets, topicFilter } from '@/api'
 import { useSlug, useFromRoute } from '@/composables'
 import TweetForm from '@/components/TweetForm'
 import TweetList from '@/components/TweetList'
@@ -10,26 +10,25 @@ import TweetSearch from '@/components/TweetSearch'
 // Data.
 const router = useRouter()
 const tweets = ref([])
-const loading = ref(true)
 const topic = ref('')
 const slugTopic = useSlug(topic)
 const viewedTopic = ref('')
+const filters = ref([])
+
+const onNewPage = newTweets => tweets.value.push(...newTweets)
+const { prefetch, hasNextPage, getNextPage, loading } = paginateTweets(filters, 10, onNewPage)
 
 // Actions.
 const search = () => {
     router.push(`/topics/${slugTopic.value}`)
 }
 
-const fetchTopicTweets = async () => {
-    if (slugTopic.value === viewedTopic.value) return
-    try {
-        loading.value = true
-        const fetchedTweets = await fetchTweets([topicFilter(slugTopic.value)])
-        tweets.value = fetchedTweets
-        viewedTopic.value = slugTopic.value
-    } finally {
-        loading.value = false
-    }
+const fetchTopicTweets = () => {
+    if (slugTopic.value === viewedTopic.value) return;
+    tweets.value = []
+    viewedTopic.value = slugTopic.value
+    filters.value = [topicFilter(slugTopic.value)]
+    prefetch().then(getNextPage)
 }
 
 const addTweet = tweet => tweets.value.push(tweet)
@@ -56,8 +55,8 @@ useFromRoute((route) => {
     </tweet-search>
     <div v-if="viewedTopic">
         <tweet-form @added="addTweet" :forced-topic="viewedTopic"></tweet-form>
-        <tweet-list v-model:tweets="tweets" :loading="loading"></tweet-list>
-        <div v-if="tweets.length === 0" class="p-8 text-gray-500 text-center">
+        <tweet-list v-model:tweets="tweets" :loading="loading" :has-more="hasNextPage" @more="getNextPage"></tweet-list>
+        <div v-if="!loading && tweets.length === 0" class="p-8 text-gray-500 text-center">
             No tweets were found in this topic...
         </div>
     </div>

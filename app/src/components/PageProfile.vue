@@ -1,19 +1,21 @@
 <script setup>
 import { ref, watchEffect } from 'vue'
-import { fetchTweets, authorFilter } from '@/api'
+import { paginateTweets, authorFilter } from '@/api'
 import TweetForm from '@/components/TweetForm'
 import TweetList from '@/components/TweetList'
 import { useWorkspace } from '@/composables'
 
 const tweets = ref([])
-const loading = ref(true)
 const { wallet } = useWorkspace()
+const filters = ref([])
+
+const onNewPage = newTweets => tweets.value.push(...newTweets)
+const { prefetch, hasNextPage, getNextPage, loading } = paginateTweets(filters, 10, onNewPage)
 
 watchEffect(() => {
     if (! wallet.value) return
-    fetchTweets([authorFilter(wallet.value.publicKey.toBase58())])
-        .then(fetchedTweets => tweets.value = fetchedTweets)
-        .finally(() => loading.value = false)
+    filters.value = [authorFilter(wallet.value.publicKey.toBase58())]
+    prefetch().then(getNextPage)
 })
 
 const addTweet = tweet => tweets.value.push(tweet)
@@ -24,5 +26,5 @@ const addTweet = tweet => tweets.value.push(tweet)
         {{ wallet.publicKey.toBase58() }}
     </div>
     <tweet-form @added="addTweet"></tweet-form>
-    <tweet-list v-model:tweets="tweets" :loading="loading"></tweet-list>
+    <tweet-list v-model:tweets="tweets" :loading="loading" :has-more="hasNextPage" @more="getNextPage"></tweet-list>
 </template>

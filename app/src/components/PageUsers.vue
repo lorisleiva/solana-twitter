@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { fetchTweets, authorFilter } from '@/api'
+import { paginateTweets, authorFilter } from '@/api'
 import { useFromRoute } from '@/composables'
 import TweetList from '@/components/TweetList'
 import TweetSearch from '@/components/TweetSearch'
@@ -9,25 +9,24 @@ import TweetSearch from '@/components/TweetSearch'
 // Data.
 const router = useRouter()
 const tweets = ref([])
-const loading = ref(true)
 const author = ref('')
 const viewedAuthor = ref('')
+const filters = ref([])
+
+const onNewPage = newTweets => tweets.value.push(...newTweets)
+const { prefetch, hasNextPage, getNextPage, loading } = paginateTweets(filters, 10, onNewPage)
 
 // Actions.
 const search = () => {
     router.push(`/users/${author.value}`)
 }
 
-const fetchAuthorTweets = async () => {
-    if (author.value === viewedAuthor.value) return
-    try {
-        loading.value = true
-        const fetchedTweets = await fetchTweets([authorFilter(author.value)])
-        tweets.value = fetchedTweets
-        viewedAuthor.value = author.value
-    } finally {
-        loading.value = false
-    }
+const fetchAuthorTweets = () => {
+    if (author.value === viewedAuthor.value) return;
+    tweets.value = []
+    viewedAuthor.value = author.value
+    filters.value = [authorFilter(author.value)]
+    prefetch().then(getNextPage)
 }
 
 // Router hooks.
@@ -51,8 +50,8 @@ useFromRoute((route) => {
         </template>
     </tweet-search>
     <div v-if="viewedAuthor">
-        <tweet-list v-model:tweets="tweets" :loading="loading"></tweet-list>
-        <div v-if="tweets.length === 0" class="p-8 text-gray-500 text-center">
+        <tweet-list v-model:tweets="tweets" :loading="loading" :has-more="hasNextPage" @more="getNextPage"></tweet-list>
+        <div v-if="!loading && tweets.length === 0" class="p-8 text-gray-500 text-center">
             User not found...
         </div>
     </div>
