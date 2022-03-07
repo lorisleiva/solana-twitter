@@ -6,7 +6,7 @@ import TweetList from '@/components/TweetList'
 
 const tweets = ref([])
 const onNewPage = newTweets => tweets.value.push(...newTweets)
-const { prefetch, getNextPage, loading } = paginateTweets([], 10, onNewPage)
+const { prefetch, hasNextPage, getNextPage, loading } = paginateTweets([], 10, onNewPage)
 prefetch().then(getNextPage)
 
 const addTweet = tweet => tweets.value.push(tweet)
@@ -14,5 +14,5 @@ const addTweet = tweet => tweets.value.push(tweet)
 
 <template>
     <tweet-form @added="addTweet"></tweet-form>
-    <tweet-list v-model:tweets="tweets" :loading="loading"></tweet-list>
+    <tweet-list v-model:tweets="tweets" :loading="loading" :has-more="hasNextPage" @more="getNextPage"></tweet-list>
 </template>
