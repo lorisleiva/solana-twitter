@@ -14,6 +14,7 @@ const { prefetch, hasNextPage, getNextPage, loading } = paginateTweets(filters, 
 
 watchEffect(() => {
     if (! wallet.value) return
+    tweets.value = []
     filters.value = [authorFilter(wallet.value.publicKey.toBase58())]
     prefetch().then(getNextPage)
 })
